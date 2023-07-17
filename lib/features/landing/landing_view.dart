@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:threads_ihun_app/config/constants/palettes.dart';
 import 'package:threads_ihun_app/config/constants/text_styles.dart';
-
-import 'package:threads_ihun_app/views/main_menu/main_menu_view.dart';
+import 'package:threads_ihun_app/features/authenticate/views/sign_in_page.dart';
 
 class LandingView extends StatefulWidget {
   const LandingView({super.key});
@@ -21,7 +20,7 @@ class _LandingViewState extends State<LandingView> {
           context,
           MaterialPageRoute(
             fullscreenDialog: true,
-            builder: (context) => const MainMenuView(),
+            builder: (context) => const SignInPage(),
           ),
           (route) => false);
     });

@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:threads_ihun_app/features/home/home_view.dart';
 
-import 'package:threads_ihun_app/views/home/home_view.dart';
-import 'package:threads_ihun_app/views/notification/notification_view.dart';
-import 'package:threads_ihun_app/views/post/post_view.dart';
-import 'package:threads_ihun_app/views/profile/profile_view.dart';
-import 'package:threads_ihun_app/views/search/search_view.dart';
+import '../notification/notification_view.dart';
+import '../post/post_view.dart';
+import '../profile/profile_view.dart';
+import '../search/search_view.dart';
 
 class MainMenuView extends StatefulWidget {
   const MainMenuView({super.key});
