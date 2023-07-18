@@ -2,10 +2,10 @@ import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as model;
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:threads_ihun_app/core/providers.dart';
-import 'package:threads_ihun_app/core/type_defs.dart';
 
-import '../core/failure.dart';
+import '../../core/failure.dart';
+import '../../core/providers.dart';
+import '../../core/type_defs.dart';
 
 final authAPIProvider = Provider((ref) {
   final account = ref.watch(appwriteAccountProvider);

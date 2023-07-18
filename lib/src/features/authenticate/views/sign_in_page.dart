@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:threads_ihun_app/config/widgets/flutter_toast.dart';
-import 'package:threads_ihun_app/features/authenticate/controllers/auth_controller.dart';
 
+import '../../../config/widgets/flutter_toast.dart';
+import '../controllers/auth_controller.dart';
 import 'widgets/authenticate_widgets.dart';
 
 class SignInPage extends ConsumerStatefulWidget {

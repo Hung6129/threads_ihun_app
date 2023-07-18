@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:threads_ihun_app/config/constants/palettes.dart';
-import 'package:threads_ihun_app/config/constants/text_styles.dart';
-import 'package:threads_ihun_app/features/authenticate/views/sign_in_page.dart';
+import '../../config/constants/palettes.dart';
+import '../../config/constants/text_styles.dart';
+import '../authenticate/views/sign_in_page.dart';
 
 class LandingView extends StatefulWidget {
   const LandingView({super.key});

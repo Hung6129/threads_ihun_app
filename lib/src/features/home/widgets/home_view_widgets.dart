@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:threads_ihun_app/features/post/create_post_view.dart';
+
+import '../../post/create_post_view.dart';
 
 PreferredSizeWidget appBarBuilder(String name, BuildContext context) {
   return AppBar(

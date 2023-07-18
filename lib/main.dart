@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:threads_ihun_app/config/constants/theme_data.dart';
-import 'package:threads_ihun_app/features/main_menu/main_menu_view.dart';
 
-import 'config/views/error_views.dart';
-import 'features/authenticate/controllers/auth_controller.dart';
-import 'features/landing/landing_view.dart';
+import 'src/config/constants/theme_data.dart';
+import 'src/config/views/error_views.dart';
+import 'src/features/authenticate/controllers/auth_controller.dart';
+import 'src/features/landing/landing_view.dart';
+import 'src/features/main_menu/main_menu_view.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));

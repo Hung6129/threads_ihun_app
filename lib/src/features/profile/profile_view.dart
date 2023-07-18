@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:threads_ihun_app/features/authenticate/controllers/auth_controller.dart';
+
+import '../authenticate/controllers/auth_controller.dart';
+
 
 class ProfileView extends ConsumerWidget {
   const ProfileView({super.key});

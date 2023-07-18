@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:threads_ihun_app/apis/auth_api.dart';
-import 'package:threads_ihun_app/apis/user_api.dart';
-
 import 'package:appwrite/models.dart' as model;
-import 'package:threads_ihun_app/config/widgets/flutter_toast.dart';
-import 'package:threads_ihun_app/features/authenticate/views/sign_in_page.dart';
-import 'package:threads_ihun_app/features/main_menu/main_menu_view.dart';
-import 'package:threads_ihun_app/models/user_model.dart';
+import '../../../config/apis/auth_api.dart';
+import '../../../config/apis/user_api.dart';
+import '../../../config/widgets/flutter_toast.dart';
+import '../../../models/user_model.dart';
+import '../../main_menu/main_menu_view.dart';
+import '../views/sign_in_page.dart';
 
 final authControllerProvider =
     StateNotifierProvider<AuthController, bool>((ref) {

@@ -1,12 +1,12 @@
 import 'dart:io';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:threads_ihun_app/config/constants/text_styles.dart';
-import 'package:threads_ihun_app/core/utils.dart';
-import 'package:threads_ihun_app/features/authenticate/controllers/auth_controller.dart';
+import 'package:threads_ihun_app/src/core/utils.dart';
+
+import '../../config/constants/text_styles.dart';
+import '../authenticate/controllers/auth_controller.dart';
 
 class CreatePostView extends ConsumerStatefulWidget {
   const CreatePostView({super.key});
