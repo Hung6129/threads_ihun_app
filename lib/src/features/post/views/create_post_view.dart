@@ -5,10 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:threads_ihun_app/src/core/utils.dart';
 
-import '../../config/constants/text_styles.dart';
-import '../../config/widgets/flutter_toast.dart';
-import '../authenticate/controllers/auth_controller.dart';
-import 'controller/post_controller.dart';
+import '../../../config/constants/text_styles.dart';
+import '../../../config/widgets/flutter_toast.dart';
+import '../../authenticate/controllers/auth_controller.dart';
+import '../controller/post_controller.dart';
+
+
 
 class CreatePostView extends ConsumerStatefulWidget {
   const CreatePostView({super.key});
