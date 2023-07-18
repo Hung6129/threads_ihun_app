@@ -6,7 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:threads_ihun_app/src/core/utils.dart';
 
 import '../../config/constants/text_styles.dart';
+import '../../config/widgets/flutter_toast.dart';
 import '../authenticate/controllers/auth_controller.dart';
+import 'controller/post_controller.dart';
 
 class CreatePostView extends ConsumerStatefulWidget {
   const CreatePostView({super.key});
@@ -26,14 +28,21 @@ class _CreatePostViewState extends ConsumerState<CreatePostView> {
     _postTextEditingController.dispose();
   }
 
-  // void onPickImage() async {
-  //   final images = await pickImages();
-  //   if (images.isNotEmpty) {
-  //     setState(() {
-  //       this.images = images;
-  //     });
-  //   }
-  // }
+  void sharePost() {
+    final postDescription = _postTextEditingController.text;
+    if (postDescription.isEmpty) {
+      toastInfor(
+        text: 'Please enter post description',
+      );
+      return;
+    }
+    ref.read(postControllerProvider.notifier).sharePost(
+          images: images,
+          postDescription: postDescription,
+          context: context,
+        );
+  }
+
   void onPickImages() async {
     images = await pickImages();
     setState(() {});
@@ -42,6 +51,7 @@ class _CreatePostViewState extends ConsumerState<CreatePostView> {
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserDetailsProvider).value;
+    final isLoading = ref.watch(postControllerProvider);
     return Scaffold(
         appBar: AppBar(
           title: const Text('Create Post'),
@@ -54,7 +64,7 @@ class _CreatePostViewState extends ConsumerState<CreatePostView> {
           ),
           automaticallyImplyLeading: false,
         ),
-        body: currentUser == null
+        body: isLoading || currentUser == null
             ? const Center(child: CircularProgressIndicator())
             : Column(
                 children: [
@@ -126,6 +136,12 @@ class _CreatePostViewState extends ConsumerState<CreatePostView> {
                   onPressed: () {},
                   icon: const Icon(Icons.location_on),
                   label: const Text('Location'),
+                ),
+                const Spacer(),
+                TextButton.icon(
+                  onPressed: sharePost,
+                  icon: const Icon(Icons.upload),
+                  label: const Text('Post'),
                 ),
               ],
             ),

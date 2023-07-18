@@ -49,7 +49,6 @@ class UserModel {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-
     result.addAll({'email': email});
     result.addAll({'name': name});
     result.addAll({'followers': followers});
@@ -58,7 +57,6 @@ class UserModel {
     result.addAll({'bannerPic': bannerPic});
     result.addAll({'bio': bio});
     result.addAll({'isBlueCheck': isBlueCheck});
-
     return result;
   }
 
