@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:threads_ihun_app/config/constants/palettes.dart';
 
-PreferredSizeWidget appBarBuilder() {
+PreferredSizeWidget appBarBuilder(String name) {
   return AppBar(
     elevation: 0,
-    title: const Text('Instagram'),
+    title: Text('Hello $name'),
     actions: [
       IconButton(
         onPressed: () {},

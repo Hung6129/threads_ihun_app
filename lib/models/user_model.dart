@@ -1,6 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+import 'package:flutter/foundation.dart';
 
+@immutable
 class UserModel {
   final String email;
   final String name;
@@ -48,39 +48,65 @@ class UserModel {
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'email': email,
-      'name': name,
-      'followers': followers,
-      'following': following,
-      'profilePic': profilePic,
-      'bannerPic': bannerPic,
-      'bio': bio,
-      'isBlueCheck': isBlueCheck,
-    };
+    final result = <String, dynamic>{};
+
+    result.addAll({'email': email});
+    result.addAll({'name': name});
+    result.addAll({'followers': followers});
+    result.addAll({'following': following});
+    result.addAll({'profilePic': profilePic});
+    result.addAll({'bannerPic': bannerPic});
+    result.addAll({'bio': bio});
+    result.addAll({'isBlueCheck': isBlueCheck});
+
+    return result;
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      email: map['email'] as String,
-      name: map['name'] as String,
-      followers: List<String>.from(map['followers'] as List<String>),
-      following: List<String>.from(map['following'] as List<String>),
-      profilePic: map['profilePic'] as String,
-      bannerPic: map['bannerPic'] as String,
-      uid: map['\$uid'] as String,
-      bio: map['bio'] as String,
-      isBlueCheck: map['isBlueCheck'] as bool,
+      email: map['email'] ?? '',
+      name: map['name'] ?? '',
+      followers: List<String>.from(map['followers']),
+      following: List<String>.from(map['following']),
+      profilePic: map['profilePic'] ?? '',
+      bannerPic: map['bannerPic'] ?? '',
+      uid: map['\$id'] ?? '',
+      bio: map['bio'] ?? '',
+      isBlueCheck: map['isBlueCheck'] ?? false,
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory UserModel.fromJson(String source) =>
-      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
     return 'UserModel(email: $email, name: $name, followers: $followers, following: $following, profilePic: $profilePic, bannerPic: $bannerPic, uid: $uid, bio: $bio, isBlueCheck: $isBlueCheck)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is UserModel &&
+        other.email == email &&
+        other.name == name &&
+        listEquals(other.followers, followers) &&
+        listEquals(other.following, following) &&
+        other.profilePic == profilePic &&
+        other.bannerPic == bannerPic &&
+        other.uid == uid &&
+        other.bio == bio &&
+        other.isBlueCheck == isBlueCheck;
+  }
+
+  @override
+  int get hashCode {
+    return email.hashCode ^
+        name.hashCode ^
+        followers.hashCode ^
+        following.hashCode ^
+        profilePic.hashCode ^
+        bannerPic.hashCode ^
+        uid.hashCode ^
+        bio.hashCode ^
+        isBlueCheck.hashCode;
   }
 }

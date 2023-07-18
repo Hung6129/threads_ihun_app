@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:threads_ihun_app/config/constants/palettes.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'widgets/home_view_widgets.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      appBar: appBarBuilder(),
+      appBar: appBarBuilder(''),
       body: const Center(
         child: Text(
           'Home View',

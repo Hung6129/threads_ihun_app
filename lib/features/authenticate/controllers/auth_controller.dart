@@ -17,18 +17,22 @@ final authControllerProvider =
   );
 });
 
-final currentUserProvider = FutureProvider((ref) async {
-  return ref.watch(authControllerProvider.notifier).currentUser();
+final currentUserDetailsProvider = FutureProvider((ref) {
+  final currentUserId = ref.watch(currentUserAccountProvider).value!.$id;
+  final userDetails = ref.watch(userDetailsProvider(currentUserId));
+  print(currentUserId);
+  print(userDetails.value.toString());
+  return userDetails.value;
 });
 
-final currentUserDetailProvider = FutureProvider((ref) {
-  final currentUserId = ref.watch(currentUserProvider).value!.$id;
-  final userDetail = ref.watch(userDetailProvider(currentUserId));
-  return userDetail.value;
+final userDetailsProvider = FutureProvider.family((ref, String uid) {
+  final authController = ref.watch(authControllerProvider.notifier);
+  return authController.getUserData(uid);
 });
 
-final userDetailProvider = FutureProvider.family((ref, String uid) {
-  return ref.watch(authControllerProvider.notifier).getUserData(uid);
+final currentUserAccountProvider = FutureProvider((ref) {
+  final authController = ref.watch(authControllerProvider.notifier);
+  return authController.currentUser();
 });
 
 class AuthController extends StateNotifier<bool> {
@@ -41,52 +45,48 @@ class AuthController extends StateNotifier<bool> {
         _userAPI = userAPI,
         super(false);
 
-  // isLoading
-
-  Future<model.User?> currentUser() => _authAPI.currentUser();
+  Future<model.User?> currentUser() => _authAPI.currentUserAccount();
 
   void signUp({
     required String email,
     required String password,
-    required String userName,
     required BuildContext context,
   }) async {
     state = true;
     final res = await _authAPI.signUp(
       email: email,
       password: password,
-      userName: userName,
     );
     state = false;
     res.fold(
       (l) => toastInfor(text: l.message),
       (r) async {
-        UserModel userData = UserModel(
+        UserModel userModel = UserModel(
           email: email,
-          name: userName,
-          followers: [],
-          following: [],
-          profilePic: "",
-          bannerPic: "",
+          name: email,
+          followers: const [],
+          following: const [],
+          profilePic: '',
+          bannerPic: '',
           uid: r.$id,
-          bio: "",
+          bio: '',
           isBlueCheck: false,
         );
-        final res2 = await _userAPI.saveUserData(userData);
+        final res2 = await _userAPI.saveUserData(userModel);
         res2.fold((l) => toastInfor(text: l.message), (r) {
-          toastInfor(text: 'Create account success! Now please log in');
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const SignInPage(),
-            ),
-          );
+          toastInfor(text: 'Account created successfully');
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SignInPage(),
+              ),
+              (route) => false);
         });
       },
     );
   }
 
-  void logIn({
+  void signIn({
     required String email,
     required String password,
     required BuildContext context,
@@ -109,8 +109,8 @@ class AuthController extends StateNotifier<bool> {
   }
 
   Future<UserModel> getUserData(String uid) async {
-    final documnet = await _userAPI.getUserData(uid);
-    final updateUser = UserModel.fromMap(documnet.data);
-    return updateUser;
+    final document = await _userAPI.getUserData(uid);
+    final updatedUser = UserModel.fromMap(document.data);
+    return updatedUser;
   }
 }
