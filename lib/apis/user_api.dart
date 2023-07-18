@@ -25,15 +25,21 @@ class UserAPI implements IUserAPI {
   @override
   FutureEitherVoid saveUserData(UserModel userModel) async {
     try {
-      await _db.createDocument(
+      final userDb = await _db.createDocument(
         databaseId: AppwriteConstants.databaseId,
         collectionId: AppwriteConstants.usersCollectionId,
         documentId: userModel.uid,
         data: userModel.toMap(),
       );
+      print('user-api34: ${userDb.data.toString()}');
       return right(null);
     } on AppwriteException catch (e, st) {
-      return left(Failure(e.toString(), st));
+      return left(
+        Failure(
+          e.message ?? 'Some unexpected error occurred',
+          st,
+        ),
+      );
     } catch (e, st) {
       return left(Failure(e.toString(), st));
     }

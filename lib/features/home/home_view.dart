@@ -14,7 +14,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarBuilder(''),
+      appBar: appBarBuilder('ThreadsiHun', context),
       body: const Center(
         child: Text(
           'Home View',

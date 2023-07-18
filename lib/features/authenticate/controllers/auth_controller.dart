@@ -19,9 +19,9 @@ final authControllerProvider =
 
 final currentUserDetailsProvider = FutureProvider((ref) {
   final currentUserId = ref.watch(currentUserAccountProvider).value!.$id;
+
   final userDetails = ref.watch(userDetailsProvider(currentUserId));
-  print(currentUserId);
-  print(userDetails.value.toString());
+  print('auth-controller: $currentUserId');
   return userDetails.value;
 });
 
@@ -50,20 +50,23 @@ class AuthController extends StateNotifier<bool> {
   void signUp({
     required String email,
     required String password,
+    required String userName,
     required BuildContext context,
   }) async {
     state = true;
     final res = await _authAPI.signUp(
       email: email,
       password: password,
+      name: userName,
     );
+
     state = false;
     res.fold(
       (l) => toastInfor(text: l.message),
       (r) async {
         UserModel userModel = UserModel(
           email: email,
-          name: email,
+          name: userName,
           followers: const [],
           following: const [],
           profilePic: '',
@@ -72,13 +75,14 @@ class AuthController extends StateNotifier<bool> {
           bio: '',
           isBlueCheck: false,
         );
+
         final res2 = await _userAPI.saveUserData(userModel);
         res2.fold((l) => toastInfor(text: l.message), (r) {
           toastInfor(text: 'Account created successfully');
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => SignInPage(),
+                builder: (context) => const SignInPage(),
               ),
               (route) => false);
         });
@@ -92,10 +96,7 @@ class AuthController extends StateNotifier<bool> {
     required BuildContext context,
   }) async {
     state = true;
-    final res = await _authAPI.signIn(
-      email: email,
-      password: password,
-    );
+    final res = await _authAPI.signIn(email: email, password: password);
     state = false;
     res.fold(
       (l) => toastInfor(text: l.message),
@@ -111,6 +112,19 @@ class AuthController extends StateNotifier<bool> {
   Future<UserModel> getUserData(String uid) async {
     final document = await _userAPI.getUserData(uid);
     final updatedUser = UserModel.fromMap(document.data);
+
     return updatedUser;
+  }
+
+  void logout(BuildContext context) async {
+    final res = await _authAPI.logout();
+
+    res.fold((l) => null, (r) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const SignInPage()),
+        (route) => false,
+      );
+    });
   }
 }

@@ -16,7 +16,7 @@ class SignUpPage extends ConsumerStatefulWidget {
 
 class _SignUpPageState extends ConsumerState<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
-
+  final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _reTypePasswordController =
       TextEditingController();
@@ -25,19 +25,23 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   void dispose() {
     super.dispose();
     _emailController.dispose();
-
     _passwordController.dispose();
     _reTypePasswordController.dispose();
+    _userNameController.dispose();
   }
 
   void onSignUp() {
     final email = _emailController.text.trim();
-
     final password = _passwordController.text.trim();
     final reTypePassword = _reTypePasswordController.text.trim();
-    if (email.isNotEmpty && password.isNotEmpty && reTypePassword.isNotEmpty) {
+    final userName = _userNameController.text.trim();
+    if (email.isNotEmpty &&
+        password.isNotEmpty &&
+        reTypePassword.isNotEmpty &&
+        userName.isNotEmpty) {
       if (password == reTypePassword) {
         ref.read(authControllerProvider.notifier).signUp(
+              userName: userName,
               email: email,
               password: password,
               context: context,
@@ -67,6 +71,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     headerTitle('Sign up to enter', 'Threads iHun'),
+                    CusTextFeild(
+                        onChange: (value) {},
+                        controller: _userNameController,
+                        lblText: 'Enter your username',
+                        iconData: Icons.person_rounded),
                     CusTextFeild(
                         onChange: (value) {},
                         controller: _emailController,

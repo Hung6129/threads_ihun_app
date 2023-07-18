@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:threads_ihun_app/features/post/create_post_view.dart';
 
-PreferredSizeWidget appBarBuilder(String name) {
+PreferredSizeWidget appBarBuilder(String name, BuildContext context) {
   return AppBar(
     elevation: 0,
-    title: Text('Hello $name'),
+    title: Text(name),
     actions: [
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const CreatePostView(),
+                fullscreenDialog: true),
+          );
+        },
         icon: const Icon(Icons.add_box_outlined),
-      ),
-      IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.favorite_border_outlined),
-      ),
-      IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.send),
       ),
     ],
   );

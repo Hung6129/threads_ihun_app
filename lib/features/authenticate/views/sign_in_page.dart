@@ -28,11 +28,9 @@ class _SignInPageState extends ConsumerState<SignInPage> {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
     if (email.isNotEmpty && password.isNotEmpty) {
-      ref.read(authControllerProvider.notifier).signIn(
-            email: email,
-            password: password,
-            context: context,
-          );
+      ref
+          .read(authControllerProvider.notifier)
+          .signIn(email: email, password: password, context: context);
     } else {
       toastInfor(text: 'Please fill all fields');
     }
