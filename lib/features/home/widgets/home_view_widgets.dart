@@ -11,8 +11,9 @@ PreferredSizeWidget appBarBuilder(String name, BuildContext context) {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const CreatePostView(),
-                fullscreenDialog: true),
+              builder: (context) => const CreatePostView(),
+              fullscreenDialog: true,
+            ),
           );
         },
         icon: const Icon(Icons.add_box_outlined),

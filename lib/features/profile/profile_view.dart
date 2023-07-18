@@ -7,14 +7,30 @@ class ProfileView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentUser = ref.watch(currentUserDetailsProvider).value;
     return Scaffold(
-        body: Center(
-      child: TextButton(
-        onPressed: () {
-          ref.read(authControllerProvider.notifier).logout(context);
-        },
-        child: const Text('Logout'),
+      appBar: AppBar(
+        title: const Text('Profile'),
       ),
-    ));
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 50,
+            backgroundImage: NetworkImage(currentUser!.profilePic),
+          ),
+          const SizedBox(height: 10),
+          Text(currentUser.name),
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () {
+              ref.read(authControllerProvider.notifier).logout(context);
+            },
+            child: const Text('Logout'),
+          ),
+        ],
+      ),
+    );
   }
 }

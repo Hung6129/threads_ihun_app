@@ -21,12 +21,13 @@ final currentUserDetailsProvider = FutureProvider((ref) {
   final currentUserId = ref.watch(currentUserAccountProvider).value!.$id;
 
   final userDetails = ref.watch(userDetailsProvider(currentUserId));
-  print('auth-controller: $currentUserId');
+  print('auth-controller24: $currentUserId');
   return userDetails.value;
 });
 
 final userDetailsProvider = FutureProvider.family((ref, String uid) {
   final authController = ref.watch(authControllerProvider.notifier);
+  print('auth-controller30: $uid');
   return authController.getUserData(uid);
 });
 
@@ -118,7 +119,6 @@ class AuthController extends StateNotifier<bool> {
 
   void logout(BuildContext context) async {
     final res = await _authAPI.logout();
-
     res.fold((l) => null, (r) {
       Navigator.pushAndRemoveUntil(
         context,
