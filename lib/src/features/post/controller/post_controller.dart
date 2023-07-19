@@ -8,7 +8,8 @@ import 'package:threads_ihun_app/src/features/authenticate/controllers/auth_cont
 import 'package:threads_ihun_app/src/models/post_model.dart';
 import '../../../core/enums/post_type_enum.dart';
 
-final postControllerProvider = StateNotifierProvider<PostController, bool>(
+final postControllerProvider =
+    StateNotifierProvider.autoDispose<PostController, bool>(
   (ref) {
     return PostController(
       ref: ref,
@@ -18,8 +19,13 @@ final postControllerProvider = StateNotifierProvider<PostController, bool>(
   },
 );
 
-final getPostProvider = FutureProvider((ref) async {
+final getPostProvider = FutureProvider.autoDispose((ref) async {
   return await ref.watch(postControllerProvider.notifier).getPosts();
+});
+
+final getLatestPostProvider = StreamProvider.autoDispose((ref) {
+  final postApi = ref.watch(postAPIProvider);
+  return postApi.getLatestPost();
 });
 
 class PostController extends StateNotifier<bool> {

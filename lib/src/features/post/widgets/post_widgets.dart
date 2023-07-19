@@ -2,9 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:threads_ihun_app/src/features/authenticate/controllers/auth_controller.dart';
+import 'package:threads_ihun_app/src/models/post_model.dart';
 
 import '../../../core/enums/post_type_enum.dart';
 import '../controller/post_controller.dart';
+
+import 'package:timeago/timeago.dart' as timeago;
 
 class ListPostView extends ConsumerWidget {
   const ListPostView({super.key});
@@ -14,115 +18,11 @@ class ListPostView extends ConsumerWidget {
           data: (posts) {
             return SliverList(
               delegate: SliverChildBuilderDelegate(
+                childCount: posts.length,
                 (context, index) {
                   final postModel = posts[index];
-                  return Column(
-                    children: [
-                      ListTile(
-                        leading: CircleAvatar(
-                          radius: 20.h,
-                          backgroundImage: const NetworkImage(
-                            'https://i.pinimg.com/originals/45/8c/ef/458cef766d53e9054ca952b4b87f2f85.jpg',
-                          ),
-                        ),
-                        title: const Row(
-                          children: [
-                            Text(
-                              'User Name',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Spacer(),
-                            Text(
-                              '3h',
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Icon(
-                              Icons.more_horiz,
-                              color: Colors.grey,
-                              size: 15,
-                            ),
-                          ],
-                        ),
-                        subtitle: Text(
-                          postModel.postDescription,
-                        ),
-                      ),
-                      if (postModel.postType == PostType.image)
-                        Padding(
-                          padding: EdgeInsets.only(right: 20.w, left: 30.w),
-                          child: CarouselSlider(
-                            options: CarouselOptions(
-                              height: 280.h,
-                              initialPage: 0,
-                              enableInfiniteScroll: false,
-                              onPageChanged: (index, reason) {},
-                              scrollDirection: Axis.horizontal,
-                            ),
-                            items: postModel.imageLinks
-                                .map(
-                                  (item) => Padding(
-                                    padding: EdgeInsets.only(
-                                      right: 10.w,
-                                    ),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(12.h),
-                                        image: DecorationImage(
-                                          image: NetworkImage(item),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                      Padding(
-                        padding:
-                            EdgeInsets.only(right: 20.w, left: 70.w, top: 10.h),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.favorite_border,
-                            ),
-                            SizedBox(width: 20.w),
-                            const Icon(
-                              Icons.chat_bubble_rounded,
-                            ),
-                            SizedBox(width: 20.w),
-                            const Icon(
-                              Icons.cached_rounded,
-                            ),
-                            SizedBox(width: 20.w),
-                            const Icon(
-                              Icons.send_rounded,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsets.only(right: 20.w, left: 70.w, top: 10.h),
-                        child: Row(
-                          children: [
-                            Text(
-                              '${postModel.commentIds.length} replies . ${postModel.likes.length} likes . ${postModel.reShareCount} shares',
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Divider(),
-                    ],
-                  );
+                  return PostItemView(postModel);
                 },
-                childCount: posts.length,
               ),
             );
           },
@@ -137,5 +37,114 @@ class ListPostView extends ConsumerWidget {
             ),
           ),
         );
+  }
+}
+
+class PostItemView extends ConsumerWidget {
+  final PostModel postModel;
+  const PostItemView(this.postModel, {super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userDetailsProvider(postModel.userId));
+    return user.when(
+        data: (data) => Column(
+              children: [
+                ListTile(
+                  leading: CircleAvatar(
+                    radius: 20.h,
+                    backgroundImage: NetworkImage(
+                      data.profilePic,
+                    ),
+                  ),
+                  title: Row(
+                    children: [
+                      Text(
+                        data.name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Spacer(),
+                      Text(
+                        '${timeago.format(postModel.createdAt)}',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      SizedBox(width: 5.w),
+                      Icon(Icons.more_horiz, color: Colors.grey),
+                    ],
+                  ),
+                  subtitle: Text(
+                    postModel.postDescription,
+                  ),
+                ),
+                if (postModel.postType == PostType.image)
+                  Padding(
+                    padding: EdgeInsets.only(right: 20.w, left: 30.w),
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                        height: 280.h,
+                        initialPage: 0,
+                        enableInfiniteScroll: false,
+                        onPageChanged: (index, reason) {},
+                        scrollDirection: Axis.horizontal,
+                      ),
+                      items: postModel.imageLinks
+                          .map(
+                            (item) => Padding(
+                              padding: EdgeInsets.only(
+                                right: 10.w,
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12.h),
+                                  image: DecorationImage(
+                                    image: NetworkImage(item),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                Padding(
+                  padding: EdgeInsets.only(right: 20.w, left: 70.w, top: 10.h),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.favorite_border,
+                      ),
+                      SizedBox(width: 20.w),
+                      const Icon(
+                        Icons.chat_bubble_rounded,
+                      ),
+                      SizedBox(width: 20.w),
+                      const Icon(
+                        Icons.cached_rounded,
+                      ),
+                      SizedBox(width: 20.w),
+                      const Icon(
+                        Icons.send_rounded,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 20.w, left: 70.w, top: 10.h),
+                  child: Row(
+                    children: [
+                      Text(
+                        '${postModel.commentIds.length} replies . ${postModel.likes.length} likes . ${postModel.reShareCount} shares',
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(),
+              ],
+            ),
+        error: (error, stackTrace) => const Text('Error'),
+        loading: () => const CircularProgressIndicator());
   }
 }

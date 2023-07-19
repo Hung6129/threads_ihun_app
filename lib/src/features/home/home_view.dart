@@ -14,29 +14,31 @@ class HomeView extends ConsumerStatefulWidget {
 class _HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        SliverAppBar(
-          elevation: 0,
-          title: const Text('ThreadsiHun'),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CreatePostView(),
-                    fullscreenDialog: true,
-                  ),
-                );
-              },
-              icon: const Icon(Icons.add_box_outlined),
-            ),
-          ],
-        ),
-        const ListPostView()
-      ],
+    return SafeArea(
+      child: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+            elevation: 0,
+            title: const Text('ThreadsiHun'),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CreatePostView(),
+                      fullscreenDialog: true,
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.add_box_outlined),
+              ),
+            ],
+          ),
+          const ListPostView()
+        ],
+      ),
     );
   }
 }

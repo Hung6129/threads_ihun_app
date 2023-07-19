@@ -9,28 +9,28 @@ import '../../main_menu/main_menu_view.dart';
 import '../views/sign_in_page.dart';
 
 final authControllerProvider =
-    StateNotifierProvider<AuthController, bool>((ref) {
+    StateNotifierProvider.autoDispose<AuthController, bool>((ref) {
   return AuthController(
     authAPI: ref.watch(authAPIProvider),
     userAPI: ref.watch(userAPIProvider),
   );
 });
 
-final currentUserDetailsProvider = FutureProvider((ref) {
+final currentUserDetailsProvider = FutureProvider.autoDispose((ref) {
   final currentUserId = ref.watch(currentUserAccountProvider).value!.$id;
-
   final userDetails = ref.watch(userDetailsProvider(currentUserId));
-  print('auth-controller24: $currentUserId');
+
   return userDetails.value;
 });
 
-final userDetailsProvider = FutureProvider.family((ref, String uid) {
+final userDetailsProvider =
+    FutureProvider.autoDispose.family((ref, String uid) {
   final authController = ref.watch(authControllerProvider.notifier);
-  print('auth-controller30: $uid');
+
   return authController.getUserData(uid);
 });
 
-final currentUserAccountProvider = FutureProvider((ref) {
+final currentUserAccountProvider = FutureProvider.autoDispose((ref) {
   final authController = ref.watch(authControllerProvider.notifier);
   return authController.currentUser();
 });

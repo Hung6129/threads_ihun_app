@@ -10,19 +10,26 @@ import '../../core/failure.dart';
 import '../../core/providers.dart';
 
 final postAPIProvider = Provider((ref) {
-  return PostApi(db: ref.watch(appwriteDatabaseProvider));
+  return PostApi(
+    db: ref.watch(appwriteDatabaseProvider),
+    realtime: ref.watch(appwriteRealtimeProvider),
+  );
 });
 
 abstract class IPostApi {
   Future<List<Document>> getPosts();
 
   FutureEither<Document> sharePost(PostModel postModel);
+
+  Stream<RealtimeMessage> getLatestPost();
 }
 
 class PostApi implements IPostApi {
   final Databases _db;
-
-  PostApi({required Databases db}) : _db = db;
+  final Realtime _realtime;
+  PostApi({required Databases db, required Realtime realtime})
+      : _db = db,
+        _realtime = realtime;
   @override
   Future<List<Document>> getPosts() async {
     try {
@@ -57,5 +64,12 @@ class PostApi implements IPostApi {
     } catch (e, st) {
       return left(Failure(e.toString(), st));
     }
+  }
+
+  @override
+  Stream<RealtimeMessage> getLatestPost() {
+    return _realtime.subscribe([
+      'databases.${AppwriteConstants.databaseId}.collections.${AppwriteConstants.postsCollectionId}.documents'
+    ]).stream;
   }
 }
