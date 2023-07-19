@@ -26,13 +26,12 @@ class UserAPI implements IUserAPI {
   @override
   FutureEitherVoid saveUserData(UserModel userModel) async {
     try {
-      final userDb = await _db.createDocument(
+      await _db.createDocument(
         databaseId: AppwriteConstants.databaseId,
         collectionId: AppwriteConstants.usersCollectionId,
         documentId: userModel.uid,
         data: userModel.toMap(),
       );
-      print('user-api34: ${userDb.data.toString()}');
       return right(null);
     } on AppwriteException catch (e, st) {
       return left(

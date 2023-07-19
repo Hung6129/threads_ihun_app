@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:threads_ihun_app/src/features/authenticate/controllers/auth_controller.dart';
 import 'package:threads_ihun_app/src/models/post_model.dart';
 
+import '../../../core/constant.dart';
 import '../../../core/enums/post_type_enum.dart';
 import '../controller/post_controller.dart';
 
@@ -16,15 +17,59 @@ class ListPostView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(getPostProvider).when(
           data: (posts) {
-            return SliverList(
-              delegate: SliverChildBuilderDelegate(
-                childCount: posts.length,
-                (context, index) {
-                  final postModel = posts[index];
-                  return PostItemView(postModel);
-                },
-              ),
-            );
+            return ref.watch(getLatestPostProvider).when(
+                  data: (data) {
+                    if (data.events.contains(
+                      'databases.*.collections.${AppwriteConstants.postsCollectionId}.documents.*.create',
+                    )) {
+                      posts.insert(0, PostModel.fromMap(data.payload));
+                    } else if (data.events.contains(
+                      'databases.*.collections.${AppwriteConstants.postsCollectionId}.documents.*.update',
+                    )) {
+                      // get id of original tweet
+                      final startingPoint =
+                          data.events[0].lastIndexOf('documents.');
+                      final endPoint = data.events[0].lastIndexOf('.update');
+                      final postId = data.events[0]
+                          .substring(startingPoint + 10, endPoint);
+
+                      var post = posts
+                          .where((element) => element.postId == postId)
+                          .first;
+
+                      final postIndex = posts.indexOf(post);
+                      posts.removeWhere((element) => element.postId == postId);
+
+                      post = PostModel.fromMap(data.payload);
+                      posts.insert(postIndex, post);
+                    }
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        childCount: posts.length,
+                        (context, index) {
+                          final postModel = posts[index];
+                          return PostItemView(postModel);
+                        },
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) => SliverToBoxAdapter(
+                    child: Center(
+                      child: Text(error.toString()),
+                    ),
+                  ),
+                  loading: () {
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        childCount: posts.length,
+                        (context, index) {
+                          final postModel = posts[index];
+                          return PostItemView(postModel);
+                        },
+                      ),
+                    );
+                  },
+                );
           },
           loading: () => const SliverToBoxAdapter(
             child: Center(

@@ -79,7 +79,7 @@ class AuthAPI implements IAuthAPI {
         email: email,
         password: password,
       );
-      print('auth-api81: ${session.userId}');
+
       return right(session);
     } on AppwriteException catch (e, stackTrace) {
       return left(
@@ -98,7 +98,7 @@ class AuthAPI implements IAuthAPI {
       await _account.deleteSession(
         sessionId: 'current',
       );
-      print('auth-api101: ${_account.get()}');
+
       return right(null);
     } on AppwriteException catch (e, stackTrace) {
       return left(

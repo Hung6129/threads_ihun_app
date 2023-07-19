@@ -23,9 +23,9 @@ final getPostProvider = FutureProvider.autoDispose((ref) async {
   return await ref.watch(postControllerProvider.notifier).getPosts();
 });
 
-final getLatestPostProvider = StreamProvider.autoDispose((ref) {
-  final postApi = ref.watch(postAPIProvider);
-  return postApi.getLatestPost();
+final getLatestPostProvider = StreamProvider((ref) {
+  final tweetAPI = ref.watch(postAPIProvider);
+  return tweetAPI.getLatestPost();
 });
 
 class PostController extends StateNotifier<bool> {
