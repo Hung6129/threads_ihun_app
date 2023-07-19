@@ -16,12 +16,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarBuilder('ThreadsiHun', context),
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return const PostCardView();
-        },
-      ),
+      body: const ListPostView(),
     );
   }
 }

@@ -74,17 +74,17 @@ class PostModel {
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
     return PostModel(
-      postId: map['\$postId'] as String,
-      userId: map['userId'] as String,
-      postDescription: map['postDescription'] as String,
-      hastags: List<String>.from((map['hastags'] as List<String>)),
-      link: map['link'] as String,
-      imageLinks: List<String>.from((map['imageLinks'] as List<String>)),
+      postId: map['\$postId'] ?? '',
+      userId: map['userId'] ?? '',
+      postDescription: map['postDescription'] ?? '',
+      hastags: List<String>.from((map['hastags'])),
+      link: map['link'] ?? '',
+      imageLinks: List<String>.from((map['imageLinks'])),
       postType: (map['postType'] as String).toPostTypeEnum(),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-      likes: List<String>.from((map['likes'] as List<String>)),
-      commentIds: List<String>.from((map['commentIds'] as List<String>)),
-      reShareCount: map['reShareCount'] as int,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
+      likes: List<String>.from((map['likes'])),
+      commentIds: List<String>.from((map['commentIds'])),
+      reShareCount: map['reShareCount'] ?? 0,
     );
   }
 

@@ -13,10 +13,8 @@ final postAPIProvider = Provider((ref) {
   return PostApi(db: ref.watch(appwriteDatabaseProvider));
 });
 
-
-
 abstract class IPostApi {
-  Future<List<PostModel>> getPosts();
+  Future<List<Document>> getPosts();
 
   FutureEither<Document> sharePost(PostModel postModel);
 }
@@ -26,8 +24,18 @@ class PostApi implements IPostApi {
 
   PostApi({required Databases db}) : _db = db;
   @override
-  Future<List<PostModel>> getPosts() async {
-    throw UnimplementedError();
+  Future<List<Document>> getPosts() async {
+    try {
+      final posts = await _db.listDocuments(
+        databaseId: AppwriteConstants.databaseId,
+        collectionId: AppwriteConstants.postsCollectionId,
+      );
+      return posts.documents;
+    } on AppwriteException catch (e, st) {
+      throw Failure(e.message ?? 'Some unexpected error occurred', st);
+    } catch (e, st) {
+      throw Failure(e.toString(), st);
+    }
   }
 
   @override

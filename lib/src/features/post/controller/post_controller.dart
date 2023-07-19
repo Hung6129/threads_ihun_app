@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threads_ihun_app/src/config/apis/post_api.dart';
@@ -7,7 +6,6 @@ import 'package:threads_ihun_app/src/config/apis/storage_api.dart';
 import 'package:threads_ihun_app/src/config/widgets/flutter_toast.dart';
 import 'package:threads_ihun_app/src/features/authenticate/controllers/auth_controller.dart';
 import 'package:threads_ihun_app/src/models/post_model.dart';
-
 import '../../../core/enums/post_type_enum.dart';
 
 final postControllerProvider = StateNotifierProvider<PostController, bool>(
@@ -19,6 +17,10 @@ final postControllerProvider = StateNotifierProvider<PostController, bool>(
     );
   },
 );
+
+final getPostProvider = FutureProvider((ref) async {
+  return await ref.watch(postControllerProvider.notifier).getPosts();
+});
 
 class PostController extends StateNotifier<bool> {
   final PostApi _postApi;
@@ -153,5 +155,10 @@ class PostController extends StateNotifier<bool> {
           (element) => element.startsWith('#'),
         );
     return hastags.toList();
+  }
+
+  Future<List<PostModel>> getPosts() async {
+    final posts = await _postApi.getPosts();
+    return posts.map((post) => PostModel.fromMap(post.data)).toList();
   }
 }
