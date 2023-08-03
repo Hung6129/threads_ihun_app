@@ -1,11 +1,12 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as model;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:riverpod/riverpod.dart';
 
 import '../../core/failure.dart';
 import '../../core/providers.dart';
 import '../../core/type_defs.dart';
+
 
 final authAPIProvider = Provider((ref) {
   final account = ref.watch(appwriteAccountProvider);
@@ -13,17 +14,16 @@ final authAPIProvider = Provider((ref) {
 });
 
 abstract class IAuthAPI {
-  FutureEither<model.User> signUp({
+  FutureEither<model.Account> signUp({
     required String email,
     required String password,
-    required String name,
+    required String userName,
   });
-  FutureEither<model.Session> signIn({
+  FutureEither<model.Session> login({
     required String email,
     required String password,
   });
-  Future<model.User?> currentUserAccount();
-
+  Future<model.Account?> currentUserAccount();
   FutureEitherVoid logout();
 }
 
@@ -32,11 +32,9 @@ class AuthAPI implements IAuthAPI {
   AuthAPI({required Account account}) : _account = account;
 
   @override
-  Future<model.User?> currentUserAccount() async {
+  Future<model.Account?> currentUserAccount() async {
     try {
-      final account = await _account.get();
-      print('auth-api36: ${account.email}');
-      return account;
+      return await _account.get();
     } on AppwriteException {
       return null;
     } catch (e) {
@@ -45,17 +43,17 @@ class AuthAPI implements IAuthAPI {
   }
 
   @override
-  FutureEither<model.User> signUp({
+  FutureEither<model.Account> signUp({
     required String email,
     required String password,
-    required String name,
+    required String userName,
   }) async {
     try {
       final account = await _account.create(
         userId: ID.unique(),
         email: email,
         password: password,
-        name: name,
+        name: userName,
       );
       return right(account);
     } on AppwriteException catch (e, stackTrace) {
@@ -70,7 +68,7 @@ class AuthAPI implements IAuthAPI {
   }
 
   @override
-  FutureEither<model.Session> signIn({
+  FutureEither<model.Session> login({
     required String email,
     required String password,
   }) async {
@@ -79,7 +77,6 @@ class AuthAPI implements IAuthAPI {
         email: email,
         password: password,
       );
-
       return right(session);
     } on AppwriteException catch (e, stackTrace) {
       return left(
@@ -98,7 +95,6 @@ class AuthAPI implements IAuthAPI {
       await _account.deleteSession(
         sessionId: 'current',
       );
-
       return right(null);
     } on AppwriteException catch (e, stackTrace) {
       return left(

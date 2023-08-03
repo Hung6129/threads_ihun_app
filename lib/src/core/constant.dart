@@ -5,7 +5,7 @@ class AppwriteConstants {
 
   static const String databaseId = '64b54b9a14ae4b2e091d';
 
-  static const String usersCollectionId = '64b54b9e1fe4530a9bc5';
+  static const String usersCollectionId = '64cb3ac54a8b36ae4629';
 
   static const String postsCollectionId = '64b6cbcc436ffa35ba9c';
 

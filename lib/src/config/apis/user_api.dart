@@ -2,12 +2,11 @@ import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as model;
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:threads_ihun_app/src/core/constant.dart';
+import 'package:threads_ihun_app/src/core/providers.dart';
 
-import '../../core/constant.dart';
 import '../../core/failure.dart';
-import '../../core/providers.dart';
 import '../../core/type_defs.dart';
-
 import '../../models/user_model.dart';
 
 final userAPIProvider = Provider((ref) {
