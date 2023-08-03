@@ -13,8 +13,8 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   flutter_screenutil: ^5.8.4
-  google_fonts: ^5.1.0
-  appwrite: ^9.0.1
+  google_fonts: 
+  appwrite: ^8.2.0
   font_awesome_flutter: ^10.5.0
   flutter_riverpod: ^2.3.6
   fpdart: ^0.6.0

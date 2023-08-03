@@ -23,30 +23,6 @@ class UserModel {
     required this.isBlueCheck,
   });
 
-  UserModel copyWith({
-    String? email,
-    String? name,
-    List<String>? followers,
-    List<String>? following,
-    String? profilePic,
-    String? bannerPic,
-    String? uid,
-    String? bio,
-    bool? isBlueCheck,
-  }) {
-    return UserModel(
-      email: email ?? this.email,
-      name: name ?? this.name,
-      followers: followers ?? this.followers,
-      following: following ?? this.following,
-      profilePic: profilePic ?? this.profilePic,
-      bannerPic: bannerPic ?? this.bannerPic,
-      uid: uid ?? this.uid,
-      bio: bio ?? this.bio,
-      isBlueCheck: isBlueCheck ?? this.isBlueCheck,
-    );
-  }
-
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
     result.addAll({'email': email});
@@ -77,34 +53,5 @@ class UserModel {
   @override
   String toString() {
     return 'UserModel(email: $email, name: $name, followers: $followers, following: $following, profilePic: $profilePic, bannerPic: $bannerPic, uid: $uid, bio: $bio, isBlueCheck: $isBlueCheck)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is UserModel &&
-        other.email == email &&
-        other.name == name &&
-        listEquals(other.followers, followers) &&
-        listEquals(other.following, following) &&
-        other.profilePic == profilePic &&
-        other.bannerPic == bannerPic &&
-        other.uid == uid &&
-        other.bio == bio &&
-        other.isBlueCheck == isBlueCheck;
-  }
-
-  @override
-  int get hashCode {
-    return email.hashCode ^
-        name.hashCode ^
-        followers.hashCode ^
-        following.hashCode ^
-        profilePic.hashCode ^
-        bannerPic.hashCode ^
-        uid.hashCode ^
-        bio.hashCode ^
-        isBlueCheck.hashCode;
   }
 }

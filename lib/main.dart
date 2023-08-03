@@ -22,18 +22,16 @@ class MyApp extends ConsumerWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeApp.light,
         darkTheme: ThemeApp.dark,
-        home:
-            ref.watch(currentUserAccountProvider).when(
-                  data: (data) {
-                    if (data != null) {
-                      return const MainMenuView();
-                    }
-                    return const LandingView();
-                  },
-                  error: (error, stackTrace) => ErrorPage(error: error.toString()),
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                ),
-
+        home: ref.watch(currentUserAccountProvider).when(
+              data: (data) {
+                if (data != null) {
+                  return const MainMenuView();
+                }
+                return const LandingView();
+              },
+              error: (error, stackTrace) => ErrorPage(error: error.toString()),
+              loading: () => const Center(child: CircularProgressIndicator()),
+            ),
       ),
     );
   }
